@@ -65,6 +65,7 @@ import gov.nist.secauto.oscal.lib.model.Property;
 import gov.nist.secauto.oscal.lib.model.ResponsibleParty;
 
 public class CodeBuilderInstanceTest {
+  private static final URI OSCAL_DEFAULT_NS = URI.create("http://csrc.nist.gov/ns/oscal");
   private static OscalBindingContext bindingContext;
 
   @SuppressWarnings("null")
@@ -106,7 +107,7 @@ public class CodeBuilderInstanceTest {
     for (String roleId : roleIds) {
       Role role = new Role();
       role.setId(roleId);
-      role.setTitle(MarkupLine.fromMarkdown(roleId + "role for this catalog"));
+      role.setTitle(MarkupLine.fromMarkdown(roleId + " role for this catalog"));
       roles.add(role);
       ResponsibleParty responsibleParty = new ResponsibleParty();
       responsibleParty.setRoleId(roleId);
@@ -134,7 +135,7 @@ public class CodeBuilderInstanceTest {
     link.setHref(URI.create("#" + resourceUuid.toString()));
     // Build keyword before you add it to the metadata
     Property keywordsProp = new Property();
-    keywordsProp.setNs(URI.create("http://csrc.nist.gov/ns/oscal"));
+    keywordsProp.setNs(OSCAL_DEFAULT_NS);
     keywordsProp.setName("keywords");
     keywordsProp.setValue(
         "critical infrastructure, cybersecurity, information security, information system, OSCAL, Open Security Controls Assessment Language, security functions, security requirements, system, system security");
@@ -157,7 +158,7 @@ public class CodeBuilderInstanceTest {
     group.setId("G1");
     group.setTitle(MarkupLine.fromMarkdown("Group 1"));
     ControlPart overviewPart = new ControlPart();
-    overviewPart.setNs(URI.create("http://csrc.nist.gov/ns/oscal"));
+    overviewPart.setNs(OSCAL_DEFAULT_NS);
     overviewPart.setName("overview");
     overviewPart.setId("G1_overview");
     group.addPart(overviewPart);
@@ -167,24 +168,26 @@ public class CodeBuilderInstanceTest {
     control.setTitle(MarkupLine.fromMarkdown("Title of G1.C1"));
     ControlPart controlStatementPart = new ControlPart();
     controlStatementPart.setName("statement");
-    controlStatementPart.setNs(URI.create("http://csrc.nist.gov/ns/oscal"));
+    controlStatementPart.setNs(OSCAL_DEFAULT_NS);
     controlStatementPart.setId("G1.C1_statement");
     // You do not have to only use Markdown for Markup or MarkupMultiline, you
     // can also use HTML inline to control the structure.
     controlStatementPart.setProse(MarkupMultiline.fromHtml(
         "<p>This is the actual text of the control for Control 1 in Group 1 of this catalog.</p><p>This HTML example shows how it can have multiple lines.</p>"));
+    control.addPart(controlStatementPart);
     Control subControl = new Control();
     subControl.setClazz("category");
     subControl.setId("G1.C1.SC1");
     subControl.setTitle(MarkupLine.fromMarkdown("Title of G1.C1.SC1"));
     ControlPart subControlStatementPart = new ControlPart();
-    subControlStatementPart.setNs(URI.create("http://csrc.nist.gov/ns/oscal"));
+    subControlStatementPart.setNs(OSCAL_DEFAULT_NS);
     subControlStatementPart.setName("statement");
     subControlStatementPart.setId("G1.C1.SC1_statement");
     // You do not have to only use Markdown for Markup or MarkupMultiline, you
     // can also use HTML inline to control the structure.
     subControlStatementPart.setProse(MarkupMultiline.fromMarkdown(
-        "This is the actual text of the control for Subcontrol 1 within Control 1 in Group 1 of this catalog.\nThis Markdown example shows how it can have multiple lines."));
+        "This is the actual text of the control for Subcontrol 1 within Control 1 in Group 1 of this catalog.\n" + "\n" + "This Markdown example shows how it can have multiple lines."));
+    subControl.addPart(subControlStatementPart);
     control.addControl(subControl);
     group.addControl(control);
     Catalog catalog = new Catalog();
