@@ -134,11 +134,9 @@ public class CodeBuilderInstanceTest {
     link.setRel("canonical");
     link.setHref(URI.create("#" + resourceUuid.toString()));
     // Build keyword before you add it to the metadata
-    Property keywordsProp = new Property();
-    keywordsProp.setNs(OSCAL_DEFAULT_NS);
-    keywordsProp.setName("keywords");
-    keywordsProp.setValue(
-        "critical infrastructure, cybersecurity, information security, information system, OSCAL, Open Security Controls Assessment Language, security functions, security requirements, system, system security");
+    Property keywordsProp = Property.builder("keywords").namespace(OSCAL_DEFAULT_NS).value(
+        "critical infrastructure, cybersecurity, information security, information system, OSCAL, Open Security Controls Assessment Language, security functions, security requirements, system, system security")
+        .build();
     metadata.setTitle(catalogTitle);
     metadata.setVersion("0.1.0-alpha");
     metadata.setOscalVersion("1.1.1");
@@ -186,7 +184,8 @@ public class CodeBuilderInstanceTest {
     // You do not have to only use Markdown for Markup or MarkupMultiline, you
     // can also use HTML inline to control the structure.
     subControlStatementPart.setProse(MarkupMultiline.fromMarkdown(
-        "This is the actual text of the control for Subcontrol 1 within Control 1 in Group 1 of this catalog.\n" + "\n" + "This Markdown example shows how it can have multiple lines."));
+        "This is the actual text of the control for Subcontrol 1 within Control 1 in Group 1 of this catalog.\n" + "\n"
+            + "This Markdown example shows how it can have multiple lines."));
     subControl.addPart(subControlStatementPart);
     control.addControl(subControl);
     group.addControl(control);
